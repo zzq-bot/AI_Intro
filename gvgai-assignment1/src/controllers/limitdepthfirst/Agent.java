@@ -50,10 +50,7 @@ public class Agent extends AbstractPlayer {
 		bestScore = 1000000;
 	}
 	public boolean recursiveDFS(StateObservation stateObs, ElapsedCpuTimer elapsedTimer,int depth) {
-		if(depth!=0&&isVisited(stateObs,depth)) {
-			return false;
-		}
-		if(depth!=0&&isWholeVisited(stateObs)) {
+		if(depth!=0&&isVisited(stateObs,depth)&&isWholeVisited(stateObs)) {
 			return false;
 		}
 		visited.add(stateObs);
@@ -73,7 +70,7 @@ public class Agent extends AbstractPlayer {
 				return true;
 			}
 		}
-	    if(depth==depthLevel||stateObs.getGameWinner()==Types.WINNER.PLAYER_WINS) {
+	    if(depth==depthLevel) {
 			double score = heuristic(stateObs);
 			if(score<bestScore) {//如果当前行动更优
 				bestScore = score;

@@ -22,7 +22,7 @@ public class Agent extends AbstractPlayer {
 	public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer){
 		Types.ACTIONS action = null;
 		if(actions.size()==0) {	//如果actions有数据说明已经被执行过了,直接将action中的元素一个个输出
-			tag = getDFS(stateObs,elapsedTimer); //DFS
+			tag = DFS(stateObs,elapsedTimer); //DFS
 		}
 		if(tag) {
 			action = actions.remove(actions.size()-1);
@@ -30,7 +30,7 @@ public class Agent extends AbstractPlayer {
 		return action;
 	}
 	
-	public boolean getDFS(StateObservation stateObs,ElapsedCpuTimer elapsedTimer) {
+	public boolean DFS(StateObservation stateObs,ElapsedCpuTimer elapsedTimer) {
 		if(is_Visited(stateObs)) { // 如果已经走过
 			return false;
 		}
@@ -44,10 +44,9 @@ public class Agent extends AbstractPlayer {
 		StateObservation stCopy = stateObs.copy();
 		ArrayList<Types.ACTIONS> availableActions = stateObs.getAvailableActions();	
 		for(int i=0;i<availableActions.size();i++) {
-			stCopy = stateObs.copy();
 			Types.ACTIONS thisact = availableActions.get(i);
 			stCopy.advance(thisact);
-			if(getDFS(stCopy,elapsedTimer)) {
+			if(DFS(stCopy,elapsedTimer)) {
 				actions.add(thisact);
 				return true;
 			}

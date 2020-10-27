@@ -16,7 +16,7 @@ public class test1 {
         
         /****** Task 1 ******/
         CompetitionParameters.ACTION_TIME = 10000; // set to the time that allow you to do the depth first search
-        ArcadeMachine.runOneGame("examples/gridphysics/bait.txt", "examples/gridphysics/bait_lvl2.txt", true, depthfirstController, null, seed, false);
+        ArcadeMachine.runOneGame("examples/gridphysics/bait.txt", "examples/gridphysics/bait_lvl3.txt", true, depthfirstController, null, seed, false);
         
    
    

@@ -12,12 +12,11 @@ import tools.Vector2d;
 public class Agent extends AbstractPlayer{
 	public ArrayList<ScoreAndState> closeList=new ArrayList<ScoreAndState>();//走过的路径
 	public ArrayList<ScoreAndState> openList = new ArrayList<ScoreAndState>();//已探索未走过的路径
-	//public ArrayList<ScoreAndState> thisrealList = new ArrayList<ScoreAndState>();//这次寻路采取的路径
 	public ArrayList<StateObservation> realList=new ArrayList<StateObservation>();//真实的路径
 	public ScoreAndState nowState;//每一次执行Astar对应state
 	Vector2d orikeypos; //钥匙的坐标
 	public boolean getkey;//是否已经取到钥匙
-	//public boolean thistime_getkey;
+	
 	public Agent(StateObservation so, ElapsedCpuTimer elapsedTimer){
 		ArrayList<Observation>[] movingPositions = so.getMovablePositions();
 		orikeypos = movingPositions[0].get(0).position;
@@ -31,11 +30,6 @@ public class Agent extends AbstractPlayer{
 			//Init();
 		}
 		StateObservation stCopy = stateObs.copy();
-		//ScoreAndState fatherState = new ScoreAndState(stCopy,0,10000,null);
-		/*fatherState.stateObs = stCopy;
-		fatherState.gScore = 0;
-		fatherState.score = 0;
-		fatherState.father2thisAct = null;*/
 		nowState = new ScoreAndState(stCopy,0,10000,null);
 		nowState.father = null;
 		openList.add(nowState);
@@ -48,7 +42,6 @@ public class Agent extends AbstractPlayer{
         int numIters = 0;
         int remainingLimit = 7;
         while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
-        //while(true) {
         	if(nowState.stateObs.getGameWinner()==Types.WINNER.PLAYER_WINS)
         		break;
         	if(getKey(nowState.stateObs)&!getkey)
@@ -56,9 +49,6 @@ public class Agent extends AbstractPlayer{
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             //跑到没时间为止
             Astar(nowState);
-            /*if(thisrealList.size()>1)
-            	action = thisrealList.get(1).father2thisAct;
-            */
             numIters++;
             acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;
 
@@ -72,7 +62,6 @@ public class Agent extends AbstractPlayer{
 	public void Init() {
 		closeList.clear();
 		openList.clear();
-		//thisrealList.clear();
 	}
 	
 	public void Astar(ScoreAndState fatherState) {//每次Astar在openList找到score最好的状态，然后拓展，更新
@@ -136,8 +125,6 @@ public class Agent extends AbstractPlayer{
 	
 	public boolean isVisited(StateObservation stateObs) {
 		for(int i=0;i<closeList.size();i++) {
-			//System.out.println(closeList.get(i).stateObs.getAvatarPosition());
-			//System.out.println(stateObs.getAvatarPosition());
 			if(stateObs.equalPosition(closeList.get(i).stateObs)) {
 				return true;
 			}
@@ -177,8 +164,6 @@ public class Agent extends AbstractPlayer{
 		ArrayList<Observation>[] fixedPositions = stateObs.getImmovablePositions();
 		ArrayList<Observation>[] movingPositions = stateObs.getMovablePositions();
 		Vector2d goalpos = fixedPositions[fixedPositions.length-1].get(0).position; //目标的坐标
-		//System.out.println(goalpos);
-		//System.out.println(avatorpos);
 		Vector2d keypos; //钥匙的坐标
 		if(!getkey) {
 			if(getKey(stateObs)&&movingPositions[0].size()==0){//这一步取得钥匙{
